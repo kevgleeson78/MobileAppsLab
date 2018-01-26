@@ -52,15 +52,15 @@ namespace App1
             // use R&C to name the objects
             for (iRow = 0; iRow < _Rows; iRow++)
             {
-
+               
                 for (iCol = 0; iCol < _Cols; iCol++)
                 {
 
-                    // add event handler
-                    //myEl.Tapped += MyEl_Tapped;
+                   
 
                     SolidColorBrush solidBG = new SolidColorBrush(Colors.Black);
                     borderBG = new Border();
+                   
                     borderBG.Background = solidBG;
                     if (iRow % 2 == 0 && iCol % 2 == 0)
                     {
@@ -92,6 +92,8 @@ namespace App1
             for (int i = 0; i < 4; i++)
             {
                 cat = new Ellipse();
+                // add event handler
+                cat.Tapped += MyEl_Tapped;
                 cat.Name = "cat_" + _Rows + "_" + _Cols;
                 //use this for testing output
                 System.Diagnostics.Debug.WriteLine(cat.Name);
@@ -112,6 +114,8 @@ namespace App1
                 }
             }
             mouse = new Ellipse();
+            // add event handler
+            mouse.Tapped += MyEl_Tapped;
             mouse.Name = "mouse_" + _Rows + "_" + _Cols;
             //use this for testing output
             System.Diagnostics.Debug.WriteLine(mouse.Name);
@@ -124,11 +128,11 @@ namespace App1
         }
         private void MyEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            //Ellipse curr = (Ellipse)sender;
-            //curr.Fill = new SolidColorBrush(Colors.Red);
-            //_iCount++;
-            //tblCount.Text = _iCount.ToString();
-            //curr.Tapped -= MyEl_Tapped;
+            Ellipse curr = (Ellipse)sender;
+            curr.Fill = new SolidColorBrush(Colors.Red);
+            
+            
+            curr.Tapped -= MyEl_Tapped;
         }
     }
 }
