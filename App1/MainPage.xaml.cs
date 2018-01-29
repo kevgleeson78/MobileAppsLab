@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -49,34 +50,42 @@ namespace App1
             //
             Border borderBG;
             int iRow, iCol;
+            
             // use R&C to name the objects
             for (iRow = 0; iRow < _Rows; iRow++)
             {
-               
+
                 for (iCol = 0; iCol < _Cols; iCol++)
                 {
 
-                   
-
-                    SolidColorBrush solidBG = new SolidColorBrush(Colors.Black);
                     borderBG = new Border();
+                    borderBG.Name= "square_" + iRow.ToString() + "_" + iCol.ToString();
+                  
+                    
+                        borderBG.Background = new SolidColorBrush(Colors.Black);
+
+                    
+                    if ((iRow+iCol)%2==0)
+                    {
+                        borderBG.Background = new SolidColorBrush(Colors.Red);
+                        borderBG.SetValue(Grid.HeightProperty, 61);
+                        borderBG.SetValue(Grid.WidthProperty, 61);
+                    }
                    
-                    borderBG.Background = solidBG;
-                    if (iRow % 2 == 0 && iCol % 2 == 0)
-                    {
-                        borderBG.SetValue(Grid.RowProperty, iRow);
-                        borderBG.SetValue(Grid.ColumnProperty, iCol);
-
-
-                    }
-                    if (iRow % 2 == 1 && iCol % 2 == 1)
-                    {
-                        borderBG.SetValue(Grid.RowProperty, iRow);
-                        borderBG.SetValue(Grid.ColumnProperty, iCol);
-
-                    }
-
+                    borderBG.SetValue(Grid.ColumnProperty, iCol);
+                    borderBG.SetValue(Grid.RowProperty, iRow);
+                    
                     grdBoard.Children.Add(borderBG);
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -88,37 +97,31 @@ namespace App1
         private void Peices()
         {
             Ellipse cat, mouse;
-           
-            for (int i = 0; i < 4; i++)
+
+            for (int i = 0; i < _Rows; i+=2)
             {
                 cat = new Ellipse();
                 // add event handler
                 cat.Tapped += MyEl_Tapped;
                 cat.Name = "cat_" + _Rows + "_" + _Cols;
                 //use this for testing output
-                System.Diagnostics.Debug.WriteLine(cat.Name);
+               // System.Diagnostics.Debug.WriteLine(cat.Name);
                 cat.Fill = new SolidColorBrush(Colors.RosyBrown);
                 cat.Height = 45;
                 cat.Width = 45;
-                if (i % 2 == 0)
-                {
+                
                     cat.SetValue(Grid.RowProperty, 0);
                     cat.SetValue(Grid.ColumnProperty, i);
                     grdBoard.Children.Add(cat);
-                }
-                else
-                {
-                    cat.SetValue(Grid.RowProperty, 0);
-                    cat.SetValue(Grid.ColumnProperty, i+3);
-                    grdBoard.Children.Add(cat);
-                }
+                
+                
             }
             mouse = new Ellipse();
             // add event handler
             mouse.Tapped += MyEl_Tapped;
             mouse.Name = "mouse_" + _Rows + "_" + _Cols;
             //use this for testing output
-            System.Diagnostics.Debug.WriteLine(mouse.Name);
+            Debug.WriteLine(mouse.Name);
             mouse.Fill = new SolidColorBrush(Colors.DarkOrange);
             mouse.Height = 45;
             mouse.Width = 45;
@@ -130,8 +133,8 @@ namespace App1
         {
             Ellipse curr = (Ellipse)sender;
             curr.Fill = new SolidColorBrush(Colors.Red);
-            
-            
+            curr.Opacity = 0.5;
+
             curr.Tapped -= MyEl_Tapped;
         }
     }

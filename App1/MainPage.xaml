@@ -12,7 +12,7 @@
         
             <!--<TextBlock Text="0" x:Name="tblCount" />-->
             
-            <Grid x:Name="grdBoard" Background="Red" Height="500" Width="500">
+            <Grid x:Name="grdBoard" Background="Silver" Height="500" Width="500">
                 
                
                
