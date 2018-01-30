@@ -25,19 +25,19 @@ namespace App1
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        int _Rows, _Cols;
+
         // int _iCount;
         public MainPage()
         {
             this.InitializeComponent();
-            // _iCount = 0;
-            _Rows = 8;
-            _Cols = 8;
+
+
             Board();
             Peices();
         }
 
-
+        int _Rows = 8;
+        int _Cols = 8;
         private void Board()
         {
             for (int i = 0; i < _Rows; i++)
@@ -50,44 +50,32 @@ namespace App1
             //
             Border borderBG;
             int iRow, iCol;
-            
+
             // use R&C to name the objects
             for (iRow = 0; iRow < _Rows; iRow++)
             {
 
                 for (iCol = 0; iCol < _Cols; iCol++)
                 {
-
                     borderBG = new Border();
-                    borderBG.Name= "square_" + iRow.ToString() + "_" + iCol.ToString();
-                  
-                    
-                        borderBG.Background = new SolidColorBrush(Colors.Black);
+                    borderBG.Name = "square_" + iRow.ToString() + "_" + iCol.ToString();
+                    borderBG.Background = new SolidColorBrush(Colors.Black);
 
-                    
-                    if ((iRow+iCol)%2==0)
+
+                    if ((iRow + iCol) % 2 == 0)
                     {
                         borderBG.Background = new SolidColorBrush(Colors.Red);
-                        borderBG.SetValue(Grid.HeightProperty, 61);
-                        borderBG.SetValue(Grid.WidthProperty, 61);
+                        
                     }
-                   
+
                     borderBG.SetValue(Grid.ColumnProperty, iCol);
                     borderBG.SetValue(Grid.RowProperty, iRow);
-                    
+                    borderBG.HorizontalAlignment = HorizontalAlignment.Center;
+                    borderBG.VerticalAlignment = VerticalAlignment.Center;
+
+                    borderBG.Height = 61;
+                    borderBG.Width = 61;
                     grdBoard.Children.Add(borderBG);
-
-
-
-
-
-
-
-
-
-
-
-
 
                 }
 
@@ -96,42 +84,44 @@ namespace App1
 
         private void Peices()
         {
-            Ellipse cat, mouse;
+            Ellipse ellipse;
 
-            for (int i = 0; i < _Rows; i+=2)
+            for (int i = 0; i < _Rows; i++)
             {
-                cat = new Ellipse();
-                // add event handler
-                cat.Tapped += MyEl_Tapped;
-                cat.Name = "cat_" + _Rows + "_" + _Cols;
-                //use this for testing output
-               // System.Diagnostics.Debug.WriteLine(cat.Name);
-                cat.Fill = new SolidColorBrush(Colors.RosyBrown);
-                cat.Height = 45;
-                cat.Width = 45;
-                
-                    cat.SetValue(Grid.RowProperty, 0);
-                    cat.SetValue(Grid.ColumnProperty, i);
-                    grdBoard.Children.Add(cat);
-                
-                
+                if (i % 2 == 0)
+                {
+                    ellipse = new Ellipse();
+                    // add event handler
+                    ellipse.Tapped += MyEl_Tapped;
+                    ellipse.Name = "cat_" + _Rows + "_" + _Cols;
+                    //use this for testing output
+                    // System.Diagnostics.Debug.WriteLine(cat.Name);
+                    ellipse.Fill = new SolidColorBrush(Colors.RosyBrown);
+                    ellipse.Height = 45;
+                    ellipse.Width = 45;
+                    ellipse.SetValue(Grid.RowProperty, 0);
+                    ellipse.SetValue(Grid.ColumnProperty, i);
+                    grdBoard.Children.Add(ellipse);
+
+                }
             }
-            mouse = new Ellipse();
+            ellipse = new Ellipse();
             // add event handler
-            mouse.Tapped += MyEl_Tapped;
-            mouse.Name = "mouse_" + _Rows + "_" + _Cols;
+            ellipse.Tapped += MyEl_Tapped;
+            ellipse.Name = "mouse_" + _Rows + "_" + _Cols;
             //use this for testing output
-            Debug.WriteLine(mouse.Name);
-            mouse.Fill = new SolidColorBrush(Colors.DarkOrange);
-            mouse.Height = 45;
-            mouse.Width = 45;
-            mouse.SetValue(Grid.RowProperty, 7);
-            mouse.SetValue(Grid.ColumnProperty, 3);
-            grdBoard.Children.Add(mouse);
+            // Debug.WriteLine(mouse.Name);
+            ellipse.Fill = new SolidColorBrush(Colors.DarkOrange);
+            ellipse.Height = 45;
+            ellipse.Width = 45;
+            ellipse.SetValue(Grid.RowProperty, 7);
+            ellipse.SetValue(Grid.ColumnProperty, 3);
+            grdBoard.Children.Add(ellipse);
         }
+        Ellipse curr;
         private void MyEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Ellipse curr = (Ellipse)sender;
+           curr  = (Ellipse)sender;
             curr.Fill = new SolidColorBrush(Colors.Red);
             curr.Opacity = 0.5;
 
