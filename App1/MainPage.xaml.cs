@@ -25,17 +25,13 @@ namespace App1
     /// </summary>
     public sealed partial class MainPage : Page
     {
-
         // int _iCount;
         public MainPage()
         {
             this.InitializeComponent();
-
-
             Board();
             Peices();
         }
-
         int _Rows = 8;
         int _Cols = 8;
         private void Board()
@@ -44,7 +40,6 @@ namespace App1
             {
                 grdBoard.ColumnDefinitions.Add(new ColumnDefinition());
                 grdBoard.RowDefinitions.Add(new RowDefinition());
-
             }
 
             //
@@ -54,29 +49,22 @@ namespace App1
             // use R&C to name the objects
             for (iRow = 0; iRow < _Rows; iRow++)
             {
-
                 for (iCol = 0; iCol < _Cols; iCol++)
                 {
                     borderBG = new Border();
                     borderBG.Name = "square_" + iRow.ToString() + "_" + iCol.ToString();
                     borderBG.Background = new SolidColorBrush(Colors.Black);
-
-
                     if ((iRow + iCol) % 2 == 0)
                     {
                         borderBG.Background = new SolidColorBrush(Colors.Red);
-
                     }
-
                     borderBG.SetValue(Grid.ColumnProperty, iCol);
                     borderBG.SetValue(Grid.RowProperty, iRow);
                     borderBG.HorizontalAlignment = HorizontalAlignment.Center;
                     borderBG.VerticalAlignment = VerticalAlignment.Center;
-
                     borderBG.Height = 61;
                     borderBG.Width = 61;
                     grdBoard.Children.Add(borderBG);
-
                 }
 
             }
@@ -106,6 +94,7 @@ namespace App1
 
                 }
             }
+
             ellipse = new Ellipse();
             // add event handler
             ellipse.Tapped += MyEl_Tapped;
@@ -120,6 +109,7 @@ namespace App1
             ellipse.SetValue(Grid.ColumnProperty, 3);
             grdBoard.Children.Add(ellipse);
         }
+
         Ellipse curr;
         Border legal, legal1;
         private void MyEl_Tapped(object sender, TappedRoutedEventArgs e)
@@ -136,26 +126,30 @@ namespace App1
             Debug.WriteLine("Row " + row + " col " + column);
             if (curr.Tag.Equals("mouse"))
             {
-               
-                legal.SetValue(Grid.ColumnProperty, column + 1);
-                legal.SetValue(Grid.RowProperty, row - 1);
-                grdBoard.Children.Add(legal);
-                
-                legal1.SetValue(Grid.ColumnProperty, column - 1);
-                legal1.SetValue(Grid.RowProperty, row - 1);
-                grdBoard.Children.Add(legal1);
+                legalMove(row, column, 1, 1);
+
             }
             if (curr.Tag.Equals("cat"))
             {
-                
-                legal.SetValue(Grid.ColumnProperty, column + 1);
-                legal.SetValue(Grid.RowProperty, row + 1);
-                grdBoard.Children.Add(legal);
-                
-                legal1.SetValue(Grid.ColumnProperty, column - 1);
-                legal1.SetValue(Grid.RowProperty, row + 1);
-                grdBoard.Children.Add(legal1);
+
+                legalMove(row, column, -1, -1);
             }
+
         }
+
+        private void legalMove(int rowPos, int colPos, int y, int x)
+        {
+            legal = new Border();
+            legal.Background = new SolidColorBrush(Colors.Green);
+            legal1 = new Border();
+            legal1.Background = new SolidColorBrush(Colors.Green);
+            legal.SetValue(Grid.ColumnProperty, colPos + y);
+            legal.SetValue(Grid.RowProperty, rowPos - x);
+            grdBoard.Children.Add(legal);
+            legal1.SetValue(Grid.ColumnProperty, colPos - y);
+            legal1.SetValue(Grid.RowProperty, rowPos - x);
+            grdBoard.Children.Add(legal1);
+        }
+
     }
 }
