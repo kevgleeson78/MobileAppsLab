@@ -93,6 +93,7 @@ namespace App1
                     ellipse = new Ellipse();
                     // add event handler
                     ellipse.Tapped += MyEl_Tapped;
+                    ellipse.Tag = "cat";
                     ellipse.Name = "cat_" + _Rows + "_" + _Cols;
                     //use this for testing output
                     // System.Diagnostics.Debug.WriteLine(cat.Name);
@@ -109,6 +110,7 @@ namespace App1
             // add event handler
             ellipse.Tapped += MyEl_Tapped;
             ellipse.Name = "mouse_" + _Rows + "_" + _Cols;
+            ellipse.Tag = "mouse";
             //use this for testing output
             // Debug.WriteLine(mouse.Name);
             ellipse.Fill = new SolidColorBrush(Colors.DarkOrange);
@@ -125,21 +127,35 @@ namespace App1
             curr = (Ellipse)sender;
             //curr.Fill = new SolidColorBrush(Colors.White);
             curr.Tapped -= MyEl_Tapped;
-
+            legal = new Border();
+            legal.Background = new SolidColorBrush(Colors.Green);
+            legal1 = new Border();
+            legal1.Background = new SolidColorBrush(Colors.Green);
             var column = Grid.GetColumn(curr);
             var row = Grid.GetRow(curr);
             Debug.WriteLine("Row " + row + " col " + column);
-            legal = new Border();
-            legal.Background = new SolidColorBrush(Colors.Green);
-            legal.SetValue(Grid.ColumnProperty, column + 1);
-            legal.SetValue(Grid.RowProperty, row - 1);
-            grdBoard.Children.Add(legal);
-            legal1 = new Border();
-            legal1.Background = new SolidColorBrush(Colors.Green);
-            legal1.SetValue(Grid.ColumnProperty, column - 1);
-            legal1.SetValue(Grid.RowProperty, row - 1);
-            grdBoard.Children.Add(legal1);
-
+            if (curr.Tag.Equals("mouse"))
+            {
+               
+                legal.SetValue(Grid.ColumnProperty, column + 1);
+                legal.SetValue(Grid.RowProperty, row - 1);
+                grdBoard.Children.Add(legal);
+                
+                legal1.SetValue(Grid.ColumnProperty, column - 1);
+                legal1.SetValue(Grid.RowProperty, row - 1);
+                grdBoard.Children.Add(legal1);
+            }
+            if (curr.Tag.Equals("cat"))
+            {
+                
+                legal.SetValue(Grid.ColumnProperty, column + 1);
+                legal.SetValue(Grid.RowProperty, row + 1);
+                grdBoard.Children.Add(legal);
+                
+                legal1.SetValue(Grid.ColumnProperty, column - 1);
+                legal1.SetValue(Grid.RowProperty, row + 1);
+                grdBoard.Children.Add(legal1);
+            }
         }
     }
 }
