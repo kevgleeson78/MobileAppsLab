@@ -112,6 +112,7 @@ namespace App1
 
         Ellipse curr;
         Border legal, legal1;
+       
         private void MyEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
             curr = (Ellipse)sender;
@@ -124,16 +125,27 @@ namespace App1
             var column = Grid.GetColumn(curr);
             var row = Grid.GetRow(curr);
             Debug.WriteLine("Row " + row + " col " + column);
+            Boolean move = false;
             if (curr.Tag.Equals("mouse"))
             {
                 legalMove(row, column, 1, 1);
-
+                 move = true;
             }
             if (curr.Tag.Equals("cat"))
             {
-
                 legalMove(row, column, -1, -1);
+                move = true;
             }
+
+            if (move==true&&curr.Tag.Equals("mouse"))
+            {
+                Debug.WriteLine("The mouse has been selected...Setup move function with tapped event for it!!");
+            }
+            else
+            {
+                Debug.WriteLine("The cat has been selected...Setup move function with tapped event for it!!");
+            }
+            
 
         }
 
