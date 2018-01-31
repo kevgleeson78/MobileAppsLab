@@ -65,7 +65,7 @@ namespace App1
                     if ((iRow + iCol) % 2 == 0)
                     {
                         borderBG.Background = new SolidColorBrush(Colors.Red);
-                        
+
                     }
 
                     borderBG.SetValue(Grid.ColumnProperty, iCol);
@@ -119,13 +119,27 @@ namespace App1
             grdBoard.Children.Add(ellipse);
         }
         Ellipse curr;
+        Border legal, legal1;
         private void MyEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
-           curr  = (Ellipse)sender;
-            curr.Fill = new SolidColorBrush(Colors.Red);
-            curr.Opacity = 0.5;
-
+            curr = (Ellipse)sender;
+            //curr.Fill = new SolidColorBrush(Colors.White);
             curr.Tapped -= MyEl_Tapped;
+
+            var column = Grid.GetColumn(curr);
+            var row = Grid.GetRow(curr);
+            Debug.WriteLine("Row " + row + " col " + column);
+            legal = new Border();
+            legal.Background = new SolidColorBrush(Colors.Green);
+            legal.SetValue(Grid.ColumnProperty, column + 1);
+            legal.SetValue(Grid.RowProperty, row - 1);
+            grdBoard.Children.Add(legal);
+            legal1 = new Border();
+            legal1.Background = new SolidColorBrush(Colors.Green);
+            legal1.SetValue(Grid.ColumnProperty, column - 1);
+            legal1.SetValue(Grid.RowProperty, row - 1);
+            grdBoard.Children.Add(legal1);
+
         }
     }
 }
