@@ -110,12 +110,13 @@ namespace App1
             grdBoard.Children.Add(ellipse);
         }
 
-        Ellipse curr;
+        Ellipse moveMe;
         Border legal, legal1;
-       
+
         private void MyEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            curr = (Ellipse)sender;
+           Ellipse curr = (Ellipse)sender;
+            moveMe = curr;
             //curr.Fill = new SolidColorBrush(Colors.White);
             curr.Tapped -= MyEl_Tapped;
             legal = new Border();
@@ -128,16 +129,22 @@ namespace App1
             Boolean move = false;
             if (curr.Tag.Equals("mouse"))
             {
-                legalMove(row, column, 1, 1);
-                 move = true;
+
+                legalMove(row, column, 1);
+                move = true;
+
             }
             if (curr.Tag.Equals("cat"))
             {
-                legalMove(row, column, -1, -1);
+
+
+                legalMove(row, column, -1);
                 move = true;
+
+
             }
 
-            if (move==true&&curr.Tag.Equals("mouse"))
+            if (move == true && curr.Tag.Equals("mouse"))
             {
                 Debug.WriteLine("The mouse has been selected...Setup move function with tapped event for it!!");
             }
@@ -145,23 +152,56 @@ namespace App1
             {
                 Debug.WriteLine("The cat has been selected...Setup move function with tapped event for it!!");
             }
-            
+
 
         }
 
-        private void legalMove(int rowPos, int colPos, int y, int x)
+        private void legalMove(int rowPos, int colPos, int xy)
         {
-            legal = new Border();
-            legal.Background = new SolidColorBrush(Colors.Green);
-            legal1 = new Border();
-            legal1.Background = new SolidColorBrush(Colors.Green);
-            legal.SetValue(Grid.ColumnProperty, colPos + y);
-            legal.SetValue(Grid.RowProperty, rowPos - x);
+            //put if statement to check if the value of y is < 0 or > 7.
+            //For edge of board.
+            Border bdr = new Border();
+            bdr.Background = new SolidColorBrush(Colors.Green);
+            
+            
+            int highlightY = colPos + xy;
+            int highlightY1 = colPos - xy;
+            int highlightX = rowPos - xy;
+            
+            //to deal with edge cells of board reset position of legal move to one square.
+            if (highlightY < 0)
+            {
+                highlightY = 1;
+            }
+            else if (highlightY1 > 7)
+            {
+                highlightY1 = 7;
+            }
+           
+            bdr.Tag = "valid";
+            bdr.Tapped += moveToken;
+            legal = bdr;
+            legal.SetValue(Grid.ColumnProperty, highlightY);
+            legal.SetValue(Grid.RowProperty, highlightX);
             grdBoard.Children.Add(legal);
-            legal1.SetValue(Grid.ColumnProperty, colPos - y);
-            legal1.SetValue(Grid.RowProperty, rowPos - x);
+            bdr.Tag = "valid";
+            bdr.Tapped += moveToken;
+            legal = bdr;
+            legal1.SetValue(Grid.ColumnProperty, highlightY1);
+            legal1.SetValue(Grid.RowProperty, highlightX);
             grdBoard.Children.Add(legal1);
         }
+        private void moveToken(object sender, TappedRoutedEventArgs e)
+        {
+            Border current = (Border)sender;
 
+            moveMe.SetValue(Grid.RowProperty, current.GetValue(Grid.RowProperty));
+            moveMe.SetValue(Grid.ColumnProperty, current.GetValue(Grid.ColumnProperty));
+
+            legal.Tapped -= moveToken;
+            legal.Background = new SolidColorBrush(Colors.Red);
+            legal1.Tapped -= moveToken;
+            legal1.Background = new SolidColorBrush(Colors.Red);
+        }
     }
 }
